@@ -730,6 +730,12 @@ public abstract class DevToolsDriver implements Driver {
         return eval("document.location.href").getResult().getAsString();
     }
 
+    public String getUnreachableUrl() {
+        DevToolsMessage dtm = method("Page.getFrameTree").send();
+        Json json = Json.of(dtm.getResult().getValue());
+        return json.getOrNull("frameTree.frame.unreachableUrl");
+    }
+
     @Override
     public List<Map> getCookies() {
         DevToolsMessage dtm = method("Network.getAllCookies").send();
